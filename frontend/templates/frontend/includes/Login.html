@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+  /* Full-width input fields */
+  input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  /* Center the image and position the close button */
+  .imgcontainer {
+    text-align: center;
+    margin: 24px 0 12px 0;
+    position: relative;
+  }
+
+  img.avatar {
+    width: 40%;
+    border-radius: 50%;
+  }
+  
+  span.psw {
+    float: right;
+    padding-top: 16px;
+  }
+
+  /* The Modal (background) */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 0px;
+  }
+
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    max-width: 400px; /* Could be more or less, depending on screen size */
+  }
+
+  .close {
+    position: absolute;
+    right: 25px;
+    top: 0;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: red;
+    cursor: pointer;
+  }
+
+  /* Add Zoom Animation */
+  .animate {
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s
+  }
+
+  @-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)}
+    to {-webkit-transform: scale(1)}
+  }
+
+  @keyframes animatezoom {
+    from {transform: scale(0)}
+    to {transform: scale(1)}
+  }
+
+  /* Change styles for span and cancel button on extra small screens */
+  @media screen and (max-width: 300px) {
+    span.psw {
+      display: block;
+      float: none;
+    }
+    .cancelbtn {
+      width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div id="login" class="modal">
+
+  <form class="modal-content animate" @submit.prevent="log_user_in" method="POST">
+    <div class="imgcontainer">
+      <span onclick="document.getElementById('login').style.display='none'" class="close" title="Close Modal">&times;</span>
+      {% load static %}
+    </div>
+
+    <div class="w3-container">
+       <div class="form-group">
+        <span class="w3-small" id="error_"></span>
+        <input type="text" placeholder="Enter Username" name="username" v-model.lazy="username" required>
+      </div>
+
+       <div class="form-group">
+        <input type="password" placeholder="Enter Password" name="password" v-model.lazy="password" required>
+      </div>
+ 
+       <div class="form-group w3-center">
+          {% load static %}
+      </div>
+ 
+      <div class="form-group w3-center">
+        <p id="login_status"></p>
+      </div>
+
+      <button class="w3-button w3-purple w3-round" type="submit">Login</button>
+      <label>
+        <input type="checkbox" checked="checked" name="remember"> Remember me
+      </label>
+    </div>
+
+    <div class="w3-container" style="background-color:#f1f1f1">
+      <span class="psw">Forgot <a class="w3-text-purple" href="#">password?</a></span>
+    </div>
+  </form>
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById('login');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+$(document).ready(function(){
+    
+  var login = new Vue({
+          el : '#login',
+          delimiters : ['${','}'],
+          data : {
+              username : '',
+              password : '',
+              todos: '',
+              loadd: '',
+          },
+          methods : {
+              log_user_in : function(){
+                  $('#login_loader').show();
+                  $.ajax({
+                      url: '/api/login/',
+                      method: 'POST',
+                      data : {
+                          'username':this.username,
+                          'password':this.password, 
+                          'csrfmiddlewaretoken':getCookie('csrftoken'),
+                      },
+                      success: function (data) {
+                          console.log(data.status)
+                          if(data.status == 'true'){
+                              $('#login_status').html('Success')
+                              $('#login_status').css('color', 'green');
+                              $('#login_loader').hide();
+                              setTimeout(1000)
+                              window.location.replace("/home");
+                          }else{
+                              $('#login_status').html('Access Denied')
+                              $('#login_status').css('color', 'red');
+                              $('#login_loader').hide();
+                          }
+                      },
+                      error: function (error) {
+                          this.usernameCheck = 'Try again later'
+                      }
+                  });
+              }
+          },
+      })
+
+});
+</script>
+
+</body>
+</html>

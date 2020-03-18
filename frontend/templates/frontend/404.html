@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Smlr{% endblock %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<style>
+    input #smrl_url {
+    width: 1%;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #EFFCEF;
+    background-repeat: no-repeat;
+    }
+</style>
+
+<!-- Header with full-height image -->
+<header class="container" id="">
+
+    <br><br><br><br>
+    <div class="w3-display-container w3-center">
+        <span class="w3-center w3-jumbo">404</span><br>
+        <span class="w3-large w3-wide w3-center">Smlr link does not exist or expired</span>
+        <br><br><br>
+    </div>
+        
+  
+
+    <div class="w3-panel w3-round w3-half w3-padding w3-display-middle" style="background-color: #CCEDD2;">
+        <p class="w3-large w3-center">Unlimited 🤩</p>
+        <p class="w3-small w3-center">Smlr url is Valid for 2 weeks, Sign Up to make it <u>Unlimited!</u></p>
+        
+        <div class="w3-large w3-padding w3-bar">
+            <button class="w3-button w3-right w3-text-white w3-small" style="background-color: #655C56; max-width: 100px;" onclick="document.getElementById('login').style.display='block'">
+                Log In</button>
+            <button class="w3-button w3-right w3-text-white w3-small" style="background-color: #655C56; max-width: 100px;" onclick="document.getElementById('signup').style.display='block'">
+                Sign Up</button>
+        </div>
+        
+    </div>
+ 
+ 
+</header>
+
+{% include "frontend/includes/login.html" %}
+{% include "frontend/includes/signup.html" %}
+
+
+{% endblock %}
+
+

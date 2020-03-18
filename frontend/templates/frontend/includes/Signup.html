@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<style>
+  body {font-family: Arial, Helvetica, sans-serif;}
+  * {box-sizing: border-box;}
+
+  /* Full-width input fields */
+  input[type=text], input[type=password] {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    display: inline-block;
+    border: none;
+    background: #f1f1f1;
+  }
+
+  /* Add a background color when the inputs get focus */
+  input[type=text]:focus, input[type=password]:focus {
+    background-color: #ddd;
+    outline: none;
+  }
+
+  /* Add padding to container elements */
+  .container {
+    padding: 16px;
+  }
+
+  /* The Modal (background) */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+  }
+
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    max-width: 400px; /* Could be more or less, depending on screen size */
+  }
+
+  /* Style the horizontal ruler */
+  hr {
+    border: 1px solid #f1f1f1;
+    margin-bottom: 25px;
+  }
+
+
+  /* The Close Button (x) */
+  .close {
+    position: absolute;
+    right: 25px;
+    top: 0;
+    color: #000;
+    font-size: 35px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: red;
+    cursor: pointer;
+  }
+
+
+
+  /* Clear floats */
+  .clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  /* Change styles for cancel button and signup button on extra small screens */
+  @media screen and (max-width: 300px) {
+    .cancelbtn, .signupbtn {
+      width: 100%;
+    }
+  }
+</style>
+<body>
+
+<div id="signup" class="modal">
+  <span onclick="document.getElementById('signup').style.display='none'" class="close" title="Close Modal">&times;</span>
+  <form class="modal-content" method="POST" @submit.prevent="signup_user">
+      {% csrf_token %}
+    <div class="w3-container">
+      <button class="w3-btn w3-right w3-hover-0" onclick="document.getElementById('signup').style.display='none'">X</button>
+      <h1 class="" style="color: #94D3AC;">Sign Up</h1>
+      <p>Please fill in this form to create an account.</p>
+      <hr>
+
+      <div class="form-group">
+        <span class="w3-small" id="usernameCheck_"></span>
+        <input type="text" placeholder="Enter Username" name="username" v-model.lazy="username" required>
+      </div>
+
+       <div class="form-group">
+          <input type="password" placeholder="Enter Password" name="password1" v-model="password1" required>
+       </div>
+
+      <div class="form-group">
+          <span class="w3-small" id="passwordCheck_"></span>
+          <input type="password" placeholder="Repeat Password" name="password2" v-model="password2" required>
+       </div>
+
+      <label>
+        <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
+      </label>
+
+      <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms & Privacy</a>.</p>
+
+      <div class="clearfix">
+        <button type="submit" class="w3-center w3-button w3-round w3-right w3-text-white w3-margin" style="background-color: #655C56;">Sign Up</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById('signup');
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+$(document).ready(function(){
+  var signup = new Vue({
+      el: '#signup',
+      delimiters : ['${','}'],
+      data : {
+        username : '',
+        phone_no : '',
+        phoneCheck_ : '',
+        password1 : '',
+        password2 : '',
+        submit_btn : true,
+      },
+      watch : {
+        username : function(){
+            console.log("Verifying username")
+             $.ajax({
+                  url: '/api/registration/',
+                  method: 'POST',
+                  data : {'validate_what': 'username', 'username':this.username, 'csrfmiddlewaretoken':getCookie('csrftoken')},
+                  success: function (data) {
+                      console.log(data.color);
+                      if(data.color == 'red'){
+  //                    Username is unavailable
+                          $('#usernameCheck_').css('color', 'red');
+                          $('#usernameCheck_').html("Unavailable");
+                      }else{
+                          $('#usernameCheck_').css('color', 'green');
+                          $('#usernameCheck_').html("Available");
+                      }
+                  },
+                  error: function (error) {
+                      this.submit_btn = true
+                      this.usernameCheck = 'Try again later'
+  //                    console.log(error);
+                  }
+            });
+        },
+        password2 : function(){ //check if password1 is equal to password2
+            if(this.password1 != this.password2){
+                $('#passwordCheck_').css('color', 'red');
+                $('#passwordCheck_').html("Password does not match");
+            }else{
+                $('#passwordCheck_').css('color', 'green');
+                $('#passwordCheck_').html("Correct");
+            }
+        },
+      },methods : {
+            signup_user : function(){
+                $.ajax({
+                   url: '/api/registration/',
+                   method: 'POST',
+                   data : {
+                   'username':this.username,
+                   'password' : this.password1,
+                   'phone_no': this.phone_no,
+                   'csrfmiddlewaretoken':getCookie('csrftoken'),
+                   },
+                   success: function (data) {
+                        console.log(data.status)
+                        window.location.replace("home/");
+
+                   },
+                   error: function (error) {
+                            this.phoneCheck_ = 'Try again later'
+                   }
+            });
+            }
+      }
+
+    })
+});
+</script>
+
+</body>
+</html>

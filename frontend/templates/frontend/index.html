@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Smlr{% endblock %}
+
+{% block content %}
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<style>
+    input #smrl_url {
+    width: 1%;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #EFFCEF;
+    background-repeat: no-repeat;
+    }
+</style>
+
+<!-- Header with full-height image -->
+<header class="container" id="smlr">
+
+    <div class="w3-display-topright w3-padding w3-bar">
+        <button class="w3-button w3-right w3-text-white w3-small" style="background-color: #655C56; max-width: 100px;" onclick="document.getElementById('login').style.display='block'">
+            Log In</button>
+        <button class="w3-button w3-right w3-text-white w3-small" style="background-color: #655C56; max-width: 100px;" onclick="document.getElementById('signup').style.display='block'">
+            Sign Up</button>
+    </div>
+    <br><br><br><br>
+    <div class="w3-display-container w3-center">
+        <span class="w3-center w3-jumbo w3-hide-small">Size matters here</span><br>
+        <span class="w3-center w3-xxlarge w3-hide-large w3-hide-medium">Size matters here</span><br>
+        <!-- <span class="w3-tiny w3-wide w3-right">- Queen of Url's.</span> -->
+        <span class="w3-large w3-wide">make it smlr for FREE!.</span>
+        <br><br><br>
+    </div>
+        
+    <div class="w3-half w3-padding" id="">
+        <form @submit.prevent="get_smlr">
+            <input type="text" class="" name="smrl_url" v-model.trim="destination" placeholder="https://">
+            <input value="Go" class="w3-button w3-wide w3-center w3-text-white w3-grey w3-round"  style="background-color: #655C56;" type="submit" >
+        </form>
+    </div> 
+
+    <div class="w3-panel w3-round w3-half w3-padding " style="background-color: #CCEDD2;" id="results">
+        <p class="w3-large w3-center">Done ✔️</p>
+        <p class="w3-small">Smlr url is Valid for 2 weeks, signup to make it <u>Unlimited!</u></p>
+        <ul class="w3-ul" id="smlr_links">
+            <li id="default_link">127.0.0.1:8000/dsad8302 <button class="w3-button w3-round w3-white w3-right">Edit</button></li>
+        </ul><br>
+        <ul class="w3-padding w3-ul">
+            <p class="w3-small">Sign Up to customize Smlr url to what you can remember</u></p>
+            <li>🔒 smlr.me/lamsIG </li>
+            <li>🔒 smlr.me/igprofile </li>
+            <li>🔒 smlr.me/mytwitter </li>
+            <li>🔒 smlr.me/gitSmlr </li>
+        </ul>
+        
+    </div>
+
+    <!-- Sample  -->
+    <div class="w3-panel w3-round w3-half w3-padding" style="background-color: #CCEDD2;" id="sample">
+        <p class="w3-large w3-center">Sample 🍩</p>
+        <p class="w3-center w3-l]small">Smlr is a url shortner</p>
+        <ul class="w3-ul" id="smlr_links">
+            <li>Long url: <b>https://www.youtube.com/watch?v=kx7P_ENnDPE</b></li>
+            <li class="w3-row">
+                <span class="w3-rest" >Smlr url: 
+                    <input class="w3-left" type="text" value="127.0.0.0.1/2nhDl1R" id="copy_link">
+                </span>
+                <button class=" w3-button w3-round w3-small w3-text-white" @click="copyLink" style="background-color: #655C56;">Copy</button> 
+            </li>
+        </ul>
+    </div>
+
+ 
+    <!-- Copy Toast  -->
+    <div class="w3-display-top-left w3-padding" aria-live="polite" aria-atomic="true" id="copy_link">
+        <div class="toast" style="position: absolute; top: 0; left: 0;"  data-delay="10000">
+          <div class="toast-header">
+            <strong class="mr-auto">Copied!</strong>
+          </div>
+          <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="toast-body">
+            Hello, world! This is a toast message.
+          </div>
+        </div>
+    </div>
+
+</header>
+
+{% include "frontend/includes/login.html" %}
+{% include "frontend/includes/signup.html" %}
+
+
+{% endblock %}
+
+
