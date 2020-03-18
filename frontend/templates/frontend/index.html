@@ -4,6 +4,8 @@
 
 {% block content %}
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/daneden/animate.css/master/animate.css">
+
 <style>
     input #smrl_url {
     width: 1%;
@@ -18,13 +20,23 @@
 <!-- Header with full-height image -->
 <header class="container" id="smlr">
 
-    <div class="w3-display-topright w3-padding w3-bar">
-        <button class="w3-button w3-right w3-text-white w3-small" style="background-color: #655C56; max-width: 100px;" onclick="document.getElementById('login').style.display='block'">
-            Log In</button>
-        <button class="w3-button w3-right w3-text-white w3-small" style="background-color: #655C56; max-width: 100px;" onclick="document.getElementById('signup').style.display='block'">
-            Sign Up</button>
-    </div>
+    {% if request.user.is_authenticated %}
+        <div class="w3-display-topright w3-padding w3-bar">
+            <a href="{% url 'dashboard' %}">
+                <button class="w3-button w3-right w3-text-white w3-small" style="background-color: #655C56; max-width: 100px;" >Dashboard</button>
+            </a> 
+        </div>
+    {% else %}
+        <div class="w3-display-topright w3-padding w3-bar">
+            <button class="w3-button w3-right w3-text-white w3-small" style="background-color: #655C56; max-width: 100px;" onclick="document.getElementById('login').style.display='block'">
+                Log In</button>
+            <button class="w3-button w3-right w3-text-white w3-small" style="background-color: #655C56; max-width: 100px;" onclick="document.getElementById('signup').style.display='block'">
+                Sign Up</button>
+        </div>
+    {% endif %}
     <br><br><br><br>
+
+
     <div class="w3-display-container w3-center">
         <span class="w3-center w3-jumbo w3-hide-small">Size matters here</span><br>
         <span class="w3-center w3-xxlarge w3-hide-large w3-hide-medium">Size matters here</span><br>
@@ -40,11 +52,11 @@
         </form>
     </div> 
 
-    <div class="w3-panel w3-round w3-half w3-padding " style="background-color: #CCEDD2;" id="results">
+    <div class="w3-panel w3-round w3-half w3-padding animated bounce fast" style="background-color: #CCEDD2;" id="results">
         <p class="w3-large w3-center">Done ✔️</p>
         <p class="w3-small">Smlr url is Valid for 2 weeks, signup to make it <u>Unlimited!</u></p>
         <ul class="w3-ul" id="smlr_links">
-            <li id="default_link">127.0.0.1:8000/dsad8302 <button class="w3-button w3-round w3-white w3-right">Edit</button></li>
+            <li id="default_link">127.0.0.1:8000/ <button class="w3-button w3-round w3-white w3-right">Edit</button></li>
         </ul><br>
         <ul class="w3-padding w3-ul">
             <p class="w3-small">Sign Up to customize Smlr url to what you can remember</u></p>
@@ -59,7 +71,7 @@
     <!-- Sample  -->
     <div class="w3-panel w3-round w3-half w3-padding" style="background-color: #CCEDD2;" id="sample">
         <p class="w3-large w3-center">Sample 🍩</p>
-        <p class="w3-center w3-l]small">Smlr is a url shortner</p>
+        <p class="w3-center w3-small">Smlr is a url shortner</p>
         <ul class="w3-ul" id="smlr_links">
             <li>Long url: <b>https://www.youtube.com/watch?v=kx7P_ENnDPE</b></li>
             <li class="w3-row">

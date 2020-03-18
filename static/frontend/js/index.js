@@ -30,7 +30,7 @@ $(document).ready(function(){
                 get_smlr : function(){
                     // $('#login_loader').show();
                     $.ajax({
-                        url: '/api/getSmlr/',
+                        url: 'getSmlr/',
                         method: 'POST',
                         data : {
                             'destination':this.destination,

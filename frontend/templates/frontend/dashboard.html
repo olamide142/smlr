@@ -2,136 +2,117 @@
 
 {% block title %}Smlr | Dashboard{% endblock %}
 
-{% block content %}
-    <h1>Smlr Dashboard</h1>
-    
-<!-- Page Container -->
-<div class="w3-content w3-margin-top" style="max-width:1400px;">
-
-  <!-- The Grid -->
-  <div class="w3-row-padding">
+<div class="w3-small container" id="" >
   
-    <!-- Left Column -->
-    <div class="w3-third">
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/daneden/animate.css/master/animate.css">
+
+
+  {% block content %}
+
+  {% load filters %}
+      
+  <!-- Page Container -->
+  <div class="w3-display-topright w3-padding w3-bar">
+      <a href="{% url 'logout' %}">
+        <button class="w3-button w3-right w3-text-white w3-small w3-round" style="background-color: #655C56; max-width: 100px;" >Log Out</button>
+      </a>
+  </div> 
+
+  <div class="w3-content w3-margin-top" style="max-width:1400px;" id="dashboard">
+
+    <!-- The Grid -->
+    <div class="w3-row-padding">
     
-      <div class="w3-white w3-text-grey w3-card-4">
-        <div class="w3-display-container">
-          <img src="https://www.w3schools.com/w3images/avatar_hat.jpg" style="width:100%" alt="Avatar">
-          <div class="w3-display-bottomleft w3-container w3-text-black">
-            <h2>Jane Doe</h2>
-          </div>
-        </div>
-        <div class="w3-container">
-          <p><i class="fa fa-briefcase fa-fw w3-margin-right w3-large w3-text-teal"></i>Designer</p>
-          <p><i class="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>London, UK</p>
-          <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>ex@mail.com</p>
-          <p><i class="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>1224435534</p>
-          <hr>
+      <!-- Left Column -->
+      <div class="w3-third">
+           
+        <div class="w3-white w3-text-grey w3-card-4">
+          
+          <div class="w3-container">
+              <h2>Dashboard</h2>
+            <p><i class="fa fa-user fa-fw w3-margin-right w3-large w3-text-teal"></i>{{ request.user.username }}</p>
+            <p><i class="fa fa-link fa-fw w3-margin-right w3-large w3-text-teal"></i>Smlr links: {{ urls|length }}</p>
+            <p><i class="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>laland@mail.com</p>
+            <hr>
 
-          <p class="w3-large"><b><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Skills</b></p>
-          <p>Adobe Photoshop</p>
-          <div class="w3-light-grey w3-round-xlarge w3-small">
-            <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:90%">90%</div>
-          </div>
-          <p>Photography</p>
-          <div class="w3-light-grey w3-round-xlarge w3-small">
-            <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:80%">
-              <div class="w3-center w3-text-white">80%</div>
-            </div>
-          </div>
-          <p>Illustrator</p>
-          <div class="w3-light-grey w3-round-xlarge w3-small">
-            <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:75%">75%</div>
-          </div>
-          <p>Media</p>
-          <div class="w3-light-grey w3-round-xlarge w3-small">
-            <div class="w3-container w3-center w3-round-xlarge w3-teal" style="width:50%">50%</div>
-          </div>
-          <br>
+           
 
-          <p class="w3-large w3-text-theme"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Languages</b></p>
-          <p>English</p>
-          <div class="w3-light-grey w3-round-xlarge">
-            <div class="w3-round-xlarge w3-teal" style="height:24px;width:100%"></div>
-          </div>
-          <p>Spanish</p>
-          <div class="w3-light-grey w3-round-xlarge">
-            <div class="w3-round-xlarge w3-teal" style="height:24px;width:55%"></div>
-          </div>
-          <p>German</p>
-          <div class="w3-light-grey w3-round-xlarge">
-            <div class="w3-round-xlarge w3-teal" style="height:24px;width:25%"></div>
-          </div>
-          <br>
-        </div>
-      </div><br>
+            <p class="w3-large w3-text-theme"><b><i class="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>Create Smlr urls</b></p>
+              <div class="w3-padding" id="">
+                  <form @submit.prevent="dashboard_get_smlr">
+                      <input type="text" class="w3-input w3-padding" name="smrl_url" v-model.trim="destination" placeholder="https://">
+                      <input type="submit" value="Go" class="w3-button w3-wide w3-center w3-text-white w3-grey w3-round w3-margin"  style="background-color: #655C56;">
+                  </form>
+              </div> 
 
-    <!-- End Left Column -->
-    </div>
+              <div id="res" class="aniamted bounce fast" style="background-color: #CCEDD2">
+                <p class="w3-large w3-center">Done ✔️</p>
+                <p class="w3-small w3-center">Edit Smlr url to what you can remember</p>
+                <ul class="w3-ul" id="smlr_links">
+                    <li id="default_link">127.0.0.1:8000/ <button class="w3-button w3-round w3-white w3-right">Edit</button></li>
+                </ul><br>
+              </div>
+            <br>
 
-    <!-- Right Column -->
-    <div class="w3-twothird">
-    
-      <div class="w3-container w3-card w3-white w3-margin-bottom">
-        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-suitcase fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Work Experience</h2>
-        <div class="w3-container">
-          <h5 class="w3-opacity"><b>Front End Developer / w3schools.com</b></h5>
-          <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Jan 2015 - <span class="w3-tag w3-teal w3-round">Current</span></h6>
-          <p>Lorem ipsum dolor sit amet. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>
-          <hr>
-        </div>
-        <div class="w3-container">
-          <h5 class="w3-opacity"><b>Web Developer / something.com</b></h5>
-          <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Mar 2012 - Dec 2014</h6>
-          <p>Consectetur adipisicing elit. Praesentium magnam consectetur vel in deserunt aspernatur est reprehenderit sunt hic. Nulla tempora soluta ea et odio, unde doloremque repellendus iure, iste.</p>
-          <hr>
-        </div>
-        <div class="w3-container">
-          <h5 class="w3-opacity"><b>Graphic Designer / designsomething.com</b></h5>
-          <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Jun 2010 - Mar 2012</h6>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. </p><br>
-        </div>
+          </div>
+        </div><br>
+
+      <!-- End Left Column -->
       </div>
 
-      <div class="w3-container w3-card w3-white">
-        <h2 class="w3-text-grey w3-padding-16"><i class="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Education</h2>
-        <div class="w3-container">
-          <h5 class="w3-opacity"><b>W3Schools.com</b></h5>
-          <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>Forever</h6>
-          <p>Web Development! All I need to know in one place</p>
-          <hr>
-        </div>
-        <div class="w3-container">
-          <h5 class="w3-opacity"><b>London Business School</b></h5>
-          <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2013 - 2015</h6>
-          <p>Master Degree</p>
-          <hr>
-        </div>
-        <div class="w3-container">
-          <h5 class="w3-opacity"><b>School of Coding</b></h5>
-          <h6 class="w3-text-teal"><i class="fa fa-calendar fa-fw w3-margin-right"></i>2010 - 2013</h6>
-          <p>Bachelor Degree</p><br>
-        </div>
-      </div>
+      <!-- Right Column -->
+      <div class="w3-rest w3-center">
+      
+        <div class="w3-container w3-card w3-white w3-margin-bottom w3-padding">
+          <h2 class="w3-text-grey w3-padding-16 w3-center">
+            <i class="fa fa-bar-chart fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>
+            Monitor
+          </h2>
 
-    <!-- End Right Column -->
+          <div class="w3-container w3-responsive ">
+            <p>Monitor and manage your smlr urls.</p>
+            <hr>
+            <table class="w3-table w3-tiny w3-hoverable	w3-card w3-padding" id="list_smlr">
+              <thead style="background-color: #95D4AD;">
+                  <td>S/N</td>
+                  <td>Smlr url</td>
+                  <td>Destination</td>
+                  <td>Stats</td>
+                  <td>Edit</td>
+                  <td></td>
+              </thead>
+              <tbody class="w3-padding">
+
+                {% for url in urls reversed  %}
+                  <tr style="background-color: #CBECD1;">
+                    <td>{{forloop.counter}}</td>
+                    <td><a href="http://127.0.0.1:8000/{{url.smlr_url_id}}">{{url.smlr_url_id}}</a></td>
+                    <td><a href="{{url.destination_url}}">{{url.destination_url|reduceLen:20}}...</a></td>
+                    <td><button class="w3-center w3-tiny w3-button w3-grey w3-text-white w3-round">Chart</button></td>
+                    <td><button class="w3-center w3-tiny w3-button w3-grey w3-text-white w3-round">Edit</button></td>
+                    <td><button class="w3-center w3-tiny w3-button w3-grey w3-text-white w3-round" onclick="">Delete</button></td>
+                  </tr>
+                {% endfor %}
+              
+              </tbody>
+
+            </table>
+          </div>
+          
+        </div>
+
+        
+
+      <!-- End Right Column -->
+      </div>
+      
+    <!-- End Grid -->
     </div>
     
-  <!-- End Grid -->
+    <!-- End Page Container -->
   </div>
-  
-  <!-- End Page Container -->
+
+
+  {% endblock %}
 </div>
-
-<footer class="w3-container w3-teal w3-center w3-margin-top">
-  <p>Find me on social media.</p>
-  <i class="fa fa-facebook-official w3-hover-opacity"></i>
-  <i class="fa fa-instagram w3-hover-opacity"></i>
-  <i class="fa fa-snapchat w3-hover-opacity"></i>
-  <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-  <i class="fa fa-twitter w3-hover-opacity"></i>
-  <i class="fa fa-linkedin w3-hover-opacity"></i>
-  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-</footer>
-
-{% endblock %}

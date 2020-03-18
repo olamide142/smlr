@@ -95,11 +95,13 @@ def apiLogin(request):
 @api_view(["POST"])
 def apigetSmlr(request):
     destination = request.POST.get('destination')
+    if ("http://" or "https://") not in str(destination):
+        destination = "http://"+str(destination)
     
     if request.user.is_authenticated:
-        smlr = SmlrUrl.objects.create(smlr_url_id=randomId(), owner=user, destination_url=destination)
+        smlr = SmlrUrl.objects.create(smlr_url_id=randomId(), owner=request.user.username, destination_url=destination)
     else:
-        smlr = SmlrUrl.objects.create(smlr_url_id=randomId(), destination_url=destination)
+        smlr = SmlrUrl.objects.create(smlr_url_id=randomId(), owner="AnonymousUser", destination_url=destination)
     
     smlr.save()
     context = {'smlr_url':smlr.smlr_url_id}
@@ -109,8 +111,9 @@ def apigetSmlr(request):
 
 @api_view(["GET"])
 def apiDashBoard(request):
-    logged_in_user = User.objects.get(username=request.user.username)
-    dashboard = Dashboard.objects.get(owner=logged_in_user)
+    
+    return Response()
+
 
     
 #
