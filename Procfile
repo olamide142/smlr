@@ -1,0 +1,1 @@
+web: gunicorn smlr.wsgi --log-file -
