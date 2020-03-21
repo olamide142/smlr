@@ -31,6 +31,8 @@ def dashboardView(request):
 def routeView(request, smlr_url):
     if smlr_url == 'dashboard':
         return render(request, 'frontend/dashboard.html')
+    elif smlr_url == 'admin':
+        return  redirect('admin')
 
     try:
         smlr = SmlrUrl.objects.get(smlr_url_id = smlr_url)

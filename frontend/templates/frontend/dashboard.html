@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Smlr | Dashboard{% endblock %}
+{% block title %}Smlr | {{ request.user.username|capfirst }} Dashboard{% endblock %}
 
 <div class="w3-small container" id="" >
   
@@ -50,7 +50,7 @@
                 <p class="w3-large w3-center">Done ✔️</p>
                 <p class="w3-small w3-center">Edit Smlr url to what you can remember</p>
                 <ul class="w3-ul" id="smlr_links">
-                    <li id="default_link">127.0.0.1:8000/ <button class="w3-button w3-round w3-white w3-right">Edit</button></li>
+                    <li id="default_link">192.168.8.105:8000/ <button class="w3-button w3-round w3-white w3-right">Edit</button></li>
                 </ul><br>
               </div>
             <br>
@@ -87,7 +87,7 @@
                 {% for url in urls reversed  %}
                   <tr style="background-color: #CBECD1;">
                     <td>{{forloop.counter}}</td>
-                    <td><a href="http://127.0.0.1:8000/{{url.smlr_url_id}}">{{url.smlr_url_id}}</a></td>
+                    <td><a href="http://192.168.8.105:8000/{{url.smlr_url_id}}">{{url.smlr_url_id}}</a></td>
                     <td><a href="{{url.destination_url}}">{{url.destination_url|reduceLen:20}}...</a></td>
                     <td><button class="w3-center w3-tiny w3-button w3-grey w3-text-white w3-round">Chart</button></td>
                     <td><button class="w3-center w3-tiny w3-button w3-grey w3-text-white w3-round">Edit</button></td>

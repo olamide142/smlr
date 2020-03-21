@@ -30,7 +30,7 @@ $(document).ready(function(){
                       },
                       success: function (data) {
                           if(data.status == 'true'){
-                              window.location.replace("/dashboard");
+                              window.location.replace("/b/dashboard");
                           }else{
                               alert("Something went wromg");
                           }
